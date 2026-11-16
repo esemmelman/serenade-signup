@@ -83,6 +83,7 @@ fieldset:disabled{opacity:.7}
 .title-row{display:grid;grid-template-columns:clamp(110px,12vw,160px) minmax(0,1fr) clamp(110px,12vw,160px);align-items:center;gap:16px}
 .title-row::after{content:""}
 .title-row h1{transform:translateX(-12px)}
+.android .title-row h1{transform:translateX(-36px)}
 .attendee-link-wrap{display:flex;align-items:center;justify-content:center;min-width:0}
 .attendee-link{display:inline-block;transform:rotate(-28deg);padding:10px 2px;color:#244fbc;font-size:20px;font-weight:700;line-height:1.25;text-align:center;text-decoration:none}
 .attendee-link span{display:block;white-space:nowrap}
