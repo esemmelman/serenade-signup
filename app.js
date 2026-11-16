@@ -15,6 +15,13 @@ const success = document.querySelector('#success');
 const summary = document.querySelector('#signup-summary');
 let submitting = false;
 let attempt = null;
+let nameReminderShown = false;
+
+fullName.addEventListener('focus', () => {
+  if (nameReminderShown) return;
+  nameReminderShown = true;
+  window.alert('Please add any one else separately.');
+});
 
 function validateContact() {
   fullName.setCustomValidity(fullName.value.trim() ? '' : 'Please enter your first and last name.');
@@ -37,7 +44,7 @@ function showConfirmation(data) {
     weekday: 'short', month: 'short', day: 'numeric',
   })).join(', ');
   for (const [label, value] of [
-    ['Name', data.full_name], ['People', String(data.people_count)],
+    ['Name', data.full_name],
     ['Cell phone', data.cell_phone], ['Email', data.email], ['Available', dates || 'No dates selected'],
   ]) {
     const term = document.createElement('dt');
@@ -58,7 +65,7 @@ form.addEventListener('submit', async event => {
   if (!form.reportValidity()) return;
   const data = {
     full_name: fullName.value.trim(),
-    people_count: Number(document.querySelector('#people-count').value),
+    people_count: 1,
     cell_phone: phone.value.trim(),
     email: email.value.trim(),
     available_dates: [...form.querySelectorAll('[name="available_dates"]:checked')].map(input => input.value),
@@ -111,6 +118,7 @@ document.querySelector('#another-signup').addEventListener('click', () => {
   success.hidden = true;
   summary.replaceChildren();
   form.hidden = false;
+  nameReminderShown = false;
   fullName.focus();
 });
 
@@ -119,9 +127,9 @@ const attendeesStatus = document.querySelector('#attendees-status');
 const attendeesError = document.querySelector('#attendees-error');
 const attendeeList = document.querySelector('#attendee-list');
 const nightLabels = {
-  '2026-12-05': 'Dec. 5 — Second night',
-  '2026-12-06': 'Dec. 6 — Third night',
-  '2026-12-08': 'Dec. 8 — Fifth night',
+  '2026-12-05': 'Dec. 5 — Second night of Hanukkah',
+  '2026-12-06': 'Dec. 6 — Third night of Hanukkah',
+  '2026-12-08': 'Dec. 8 — Fifth night of Hanukkah',
 };
 let attendeeRequest = null;
 

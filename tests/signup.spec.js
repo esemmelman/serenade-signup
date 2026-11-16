@@ -4,7 +4,6 @@ const endpoint = '**/rest/v1/hanukkah_serenading_signups';
 
 async function fillContact(page) {
   await page.getByLabel('First & last name').fill('Test Serenader');
-  await page.getByLabel('Number of people').fill('3');
   await page.getByLabel('Cell phone number').fill('(555) 123-4567');
   await page.getByLabel('Email address').fill('serenader@example.com');
 }
@@ -27,13 +26,9 @@ test('required contact fields, optional dates, confirmation, and another signup'
   await page.getByRole('button', { name: 'Submit' }).click();
   expect(received).toHaveLength(0);
   await page.getByLabel('Cell phone number').fill('(555) 123-4567');
-  await page.getByLabel('Number of people').fill('0');
-  await page.getByRole('button', { name: 'Submit' }).click();
-  expect(received).toHaveLength(0);
-  await page.getByLabel('Number of people').fill('3');
   await page.getByRole('button', { name: 'Submit' }).click();
   await expect(page.getByRole('heading', { name: "You're on the list!" })).toBeVisible();
-  expect(received[0]).toMatchObject({ full_name: 'Test Serenader', people_count: 3, available_dates: [] });
+  expect(received[0]).toMatchObject({ full_name: 'Test Serenader', people_count: 1, available_dates: [] });
   await expect(page.getByText('No dates selected')).toBeVisible();
   await page.getByRole('button', { name: 'Add another signup' }).click();
   await expect(page.getByLabel('First & last name')).toHaveValue('');
@@ -106,7 +101,7 @@ for (const android of [false, true]) {
     await expect(page.getByRole('button', { name: 'Submit', exact: true })).toHaveText('Submit');
     if (android) {
       const lines = page.locator('.invitation-line');
-      await expect(lines).toHaveText(['Yes, I want to go', 'Hanukkah Serenading!']);
+      await expect(lines).toHaveText(['Yes, I want to go Hanukkah', 'Serenading to fellow congregants!']);
       for (const line of await lines.all()) {
         expect(await line.evaluate(element => {
           const range = document.createRange();
@@ -118,7 +113,7 @@ for (const android of [false, true]) {
     await page.getByRole('link', { name: "See Who's Going" }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog.locator('.attendee-name')).toHaveText(['alice Test', 'Bob Test', 'Zoe Test']);
-    await expect(dialog.locator('.attendee').first().locator('.attendee-nights>div')).toHaveText(['Dec. 5 — Second night', 'Dec. 8 — Fifth night']);
+    await expect(dialog.locator('.attendee').first().locator('.attendee-nights>div')).toHaveText(['Dec. 5 — Second night of Hanukkah', 'Dec. 8 — Fifth night of Hanukkah']);
     await expect(dialog.locator('.attendee').last()).toContainText('Dates not selected');
     expect(requests[0].searchParams.get('select')).toBe('full_name,available_dates');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -145,4 +140,25 @@ test('attendee list recovers from a failed request and handles an empty list', a
   await expect(dialog.getByRole('status')).toHaveText('No signups yet.');
   await page.keyboard.press('Escape');
   await expect(dialog).not.toBeVisible();
+});
+
+
+test('name reminder appears once per signup and group size is removed', async ({ page }) => {
+  const messages = [];
+  page.on('dialog', async dialog => {
+    messages.push(dialog.message());
+    await dialog.accept();
+  });
+  await page.route(endpoint, route => route.fulfill({ status: 201, body: '' }));
+  await page.goto('/');
+  await expect(page.getByLabel('Number of people')).toHaveCount(0);
+  await page.getByLabel('First & last name').focus();
+  expect(messages).toEqual(['Please add any one else separately.']);
+  await page.getByLabel('Email address').focus();
+  await page.getByLabel('First & last name').focus();
+  expect(messages).toHaveLength(1);
+  await fillContact(page);
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
+  await page.getByRole('button', { name: 'Add another signup' }).click();
+  expect(messages).toHaveLength(2);
 });

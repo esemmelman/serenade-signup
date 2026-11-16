@@ -17,10 +17,13 @@
     <header class="intro">
       <div class="title-row">
         <div class="attendee-link-wrap"><a class="attendee-link" id="attendee-link" href="#attendees" aria-haspopup="dialog"><span>See Who's</span> <span>Going</span></a></div>
-        <h1>Hanukkah<br><em>Serenading</em></h1>
+        <div class="title-block">
+          <p class="temple-name">Temple Beth David</p>
+          <h1>Hanukkah<br><em>Serenading</em></h1>
+        </div>
       </div>
       <p class="invitation">Available dates -- Dec. 5th, Dec. 6th, Dec. 8th</p>
-      <p class="invitation"><strong><span class="invitation-line">Yes, I want to go</span> <span class="invitation-line">Hanukkah Serenading!</span></strong></p>
+      <p class="invitation"><strong><span class="invitation-line">Yes, I want to go Hanukkah</span> <span class="invitation-line">Serenading to fellow congregants!</span></strong></p>
     </header>
 
     <section class="signup-card" aria-label="Hanukkah Serenading signup">
@@ -29,9 +32,6 @@
           <div class="contact-fields">
             <label for="full-name">First &amp; last name <span aria-hidden="true">*</span>
               <input id="full-name" name="full_name" autocomplete="name" maxlength="150" required placeholder="Your full name">
-            </label>
-            <label for="people-count">Number of people <span aria-hidden="true">*</span>
-              <input id="people-count" name="people_count" type="number" inputmode="numeric" min="1" max="2147483647" step="1" required placeholder="Including you">
             </label>
             <label for="cell-phone">Cell phone number <span aria-hidden="true">*</span>
               <input id="cell-phone" name="cell_phone" type="tel" autocomplete="tel" maxlength="30" required placeholder="(555) 123-4567" aria-describedby="phone-hint">
@@ -48,15 +48,15 @@
             <div class="date-options" aria-describedby="date-hint">
               <label class="date-option" for="dec-5">
                 <input id="dec-5" type="checkbox" name="available_dates" value="2026-12-05">
-                <span class="date-content"><span class="day">Saturday</span><strong>Dec. 5</strong><span class="night">Second night</span></span>
+                <span class="date-content"><span class="day">Saturday</span><strong>Dec. 5</strong><span class="night">Second night of Hanukkah</span></span>
               </label>
               <label class="date-option" for="dec-6">
                 <input id="dec-6" type="checkbox" name="available_dates" value="2026-12-06">
-                <span class="date-content"><span class="day">Sunday</span><strong>Dec. 6</strong><span class="night">Third night</span></span>
+                <span class="date-content"><span class="day">Sunday</span><strong>Dec. 6</strong><span class="night">Third night of Hanukkah</span></span>
               </label>
               <label class="date-option" for="dec-8">
                 <input id="dec-8" type="checkbox" name="available_dates" value="2026-12-08">
-                <span class="date-content"><span class="day">Tuesday</span><strong>Dec. 8</strong><span class="night">Fifth night</span></span>
+                <span class="date-content"><span class="day">Tuesday</span><strong>Dec. 8</strong><span class="night">Fifth night of Hanukkah</span></span>
               </label>
             </div>
           </fieldset>

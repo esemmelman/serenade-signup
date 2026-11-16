@@ -14,6 +14,7 @@ h2{font-family:'DM Serif Text',serif;font-size:30px;font-weight:400;letter-spaci
 .availability>p{font-size:13px;line-height:1.6;color:#67738a;margin:0}
 fieldset{border:0;padding:0;margin:0;min-width:0}
 .contact-fields{display:grid;grid-template-columns:1.2fr 1fr;gap:24px 22px}
+.contact-fields>label:first-child{grid-column:1/-1}
 label{font-size:13px;font-weight:600;display:block;min-width:0}
 input{font:inherit;color:#172c56}
 .contact-fields input{width:100%;min-width:0;margin-top:9px;height:48px;padding:12px 14px;border:1px solid #d5dbe5;border-radius:7px;background:#fcfcfd;font-size:15px;font-weight:400;transition:border-color .15s,box-shadow .15s}
@@ -56,7 +57,7 @@ fieldset:disabled{opacity:.7}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 .android .invitation{font-size:22px}
-.android .invitation strong{font-size:22px}
+.android .invitation strong{font-size:clamp(17px,5.3vw,22px)}
 .android .invitation-line{display:block;white-space:nowrap}
 .android label{font-size:26px}
 .android .contact-fields input{font-size:22px;height:60px}
@@ -82,10 +83,12 @@ fieldset:disabled{opacity:.7}
 
 .title-row{display:grid;grid-template-columns:clamp(110px,12vw,160px) minmax(0,1fr) clamp(110px,12vw,160px);align-items:center;gap:16px}
 .title-row::after{content:""}
-.title-row h1{transform:translateX(-12px)}
-.android .title-row h1{transform:translateX(-36px)}
+.title-block{min-width:0;transform:translateX(-12px)}
+.temple-name{font-size:20px;font-weight:600;line-height:1.35;color:#244fbc;margin:0 0 8px}
+.android .title-block{transform:translateX(-36px)}
+.android .temple-name{font-size:16px}
 .attendee-link-wrap{display:flex;align-items:center;justify-content:center;min-width:0}
-.attendee-link{display:inline-block;transform:rotate(-28deg);padding:10px 2px;color:#244fbc;font-size:20px;font-weight:700;line-height:1.25;text-align:center;text-decoration:none}
+.attendee-link{display:inline-block;transform:rotate(-28deg);padding:10px 2px;color:#244fbc;font-size:20px;font-weight:700;line-height:1.25;text-align:center;text-decoration:underline;text-underline-offset:4px}
 .attendee-link span{display:block;white-space:nowrap}
 .attendee-link:hover{color:#193877}
 .attendee-link:focus-visible{outline:3px solid #8da7e7;outline-offset:3px;border-radius:4px}
