@@ -82,8 +82,9 @@ fieldset:disabled{opacity:.7}
 
 .title-row{display:grid;grid-template-columns:clamp(110px,12vw,160px) minmax(0,1fr) clamp(110px,12vw,160px);align-items:center;gap:16px}
 .title-row::after{content:""}
+.title-row h1{transform:translateX(-12px)}
 .attendee-link-wrap{display:flex;align-items:center;justify-content:center;min-width:0}
-.attendee-link{display:inline-block;transform:rotate(-22deg);padding:10px 2px;color:#244fbc;font-size:20px;font-weight:700;line-height:1.25;text-align:center;text-decoration:none}
+.attendee-link{display:inline-block;transform:rotate(-28deg);padding:10px 2px;color:#244fbc;font-size:20px;font-weight:700;line-height:1.25;text-align:center;text-decoration:none}
 .attendee-link span{display:block;white-space:nowrap}
 .attendee-link:hover{color:#193877}
 .attendee-link:focus-visible{outline:3px solid #8da7e7;outline-offset:3px;border-radius:4px}
@@ -98,12 +99,13 @@ fieldset:disabled{opacity:.7}
 #attendees-table th:first-child{width:42%}
 #attendees-table th{color:#52617a;font-weight:600}
 #attendees-table td>div+div{margin-top:6px}
-.android .attendee-link{font-size:22px}
+.android .attendee-link{font-size:16px}
 .android #attendees-table,.android #attendees-status,.android #attendees-error{font-size:20px}
 @media(max-width:600px){#attendees{padding:20px 14px}.attendees-heading h2{font-size:28px}.attendees-heading button{font-size:16px}#attendees-table th,#attendees-table td{padding:12px 6px}}
 
 @media(max-width:600px){
   .title-row{grid-template-columns:110px minmax(0,1fr);gap:12px}
   .title-row::after{display:none}
+  .android .title-row{grid-template-columns:82px minmax(0,1fr);gap:8px}
   .title-row h1{font-size:clamp(32px,9vw,48px)}
 }
