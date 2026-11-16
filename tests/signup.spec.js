@@ -143,7 +143,7 @@ test('attendee list recovers from a failed request and handles an empty list', a
 });
 
 
-test('name reminder appears once per signup and group size is removed', async ({ page }) => {
+test('name reminder bubble appears once per signup without a browser popup', async ({ page }) => {
   const messages = [];
   page.on('dialog', async dialog => {
     messages.push(dialog.message());
@@ -152,13 +152,21 @@ test('name reminder appears once per signup and group size is removed', async ({
   await page.route(endpoint, route => route.fulfill({ status: 201, body: '' }));
   await page.goto('/');
   await expect(page.getByLabel('Number of people')).toHaveCount(0);
+  const bubble = page.locator('#name-reminder');
+  await expect(bubble).toBeHidden();
   await page.getByLabel('First & last name').focus();
-  expect(messages).toEqual(['Please add any one else separately.']);
+  await expect(bubble).toBeVisible();
+  await expect(bubble).toHaveText('Please add any one else separately.');
+  await expect(page.getByLabel('First & last name')).toBeFocused();
+  expect(messages).toHaveLength(0);
+  await page.screenshot({ path: 'test-results/name-reminder-bubble.png', fullPage: true });
   await page.getByLabel('Email address').focus();
+  await expect(bubble).toBeHidden();
   await page.getByLabel('First & last name').focus();
-  expect(messages).toHaveLength(1);
+  await expect(bubble).toBeHidden();
   await fillContact(page);
   await page.getByRole('button', { name: 'Submit', exact: true }).click();
   await page.getByRole('button', { name: 'Add another signup' }).click();
-  expect(messages).toHaveLength(2);
+  await expect(bubble).toBeVisible();
+  expect(messages).toHaveLength(0);
 });

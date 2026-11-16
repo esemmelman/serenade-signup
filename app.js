@@ -6,6 +6,7 @@ const TABLE = 'hanukkah_serenading_signups';
 const form = document.querySelector('#signup-form');
 const fields = document.querySelector('#signup-fields');
 const fullName = document.querySelector('#full-name');
+const nameReminder = document.querySelector('#name-reminder');
 const phone = document.querySelector('#cell-phone');
 const email = document.querySelector('#email');
 const submitButton = document.querySelector('#submit-button');
@@ -20,7 +21,12 @@ let nameReminderShown = false;
 fullName.addEventListener('focus', () => {
   if (nameReminderShown) return;
   nameReminderShown = true;
-  window.alert('Please add any one else separately.');
+  nameReminder.hidden = false;
+});
+
+fullName.addEventListener('blur', () => { nameReminder.hidden = true; });
+fullName.addEventListener('keydown', event => {
+  if (event.key === 'Escape') nameReminder.hidden = true;
 });
 
 function validateContact() {
@@ -119,6 +125,7 @@ document.querySelector('#another-signup').addEventListener('click', () => {
   summary.replaceChildren();
   form.hidden = false;
   nameReminderShown = false;
+  nameReminder.hidden = true;
   fullName.focus();
 });
 
