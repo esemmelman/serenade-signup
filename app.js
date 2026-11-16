@@ -99,11 +99,7 @@ form.addEventListener('submit', async event => {
     submitting = false;
     fields.disabled = false;
     submitButton.disabled = false;
-    submitButton.replaceChildren('Sign me up ');
-    const arrow = document.createElement('span');
-    arrow.setAttribute('aria-hidden', 'true');
-    arrow.textContent = '↗';
-    submitButton.append(arrow);
+    submitButton.textContent = 'Submit';
   }
 });
 
@@ -117,3 +113,82 @@ document.querySelector('#another-signup').addEventListener('click', () => {
   form.hidden = false;
   fullName.focus();
 });
+
+const attendeesDialog = document.querySelector('#attendees');
+const attendeesStatus = document.querySelector('#attendees-status');
+const attendeesError = document.querySelector('#attendees-error');
+const attendeesTable = document.querySelector('#attendees-table');
+const attendeeRows = document.querySelector('#attendee-rows');
+const nightLabels = {
+  '2026-12-05': 'Dec. 5 — Second night',
+  '2026-12-06': 'Dec. 6 — Third night',
+  '2026-12-08': 'Dec. 8 — Fifth night',
+};
+let attendeeRequest = null;
+
+async function loadAttendees() {
+  attendeeRequest?.abort();
+  const controller = new AbortController();
+  attendeeRequest = controller;
+  attendeeRows.replaceChildren();
+  attendeesTable.hidden = true;
+  attendeesError.hidden = true;
+  attendeesStatus.hidden = false;
+  attendeesStatus.textContent = 'Loading attendees…';
+  const signups = [];
+  try {
+    const pageSize = 500;
+    let batch;
+    do {
+      const params = new URLSearchParams({
+        select: 'full_name,available_dates',
+        order: 'full_name.asc,available_dates.asc',
+        limit: String(pageSize),
+        offset: String(signups.length),
+      });
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?${params}`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        signal: AbortSignal.any([controller.signal, AbortSignal.timeout(20000)]),
+        cache: 'no-store',
+      });
+      if (!response.ok) throw new Error('Could not load attendees.');
+      batch = await response.json();
+      signups.push(...batch);
+    } while (batch.length === pageSize);
+    if (controller.signal.aborted) return;
+    signups.sort((a, b) => a.full_name.localeCompare(b.full_name, 'en', { sensitivity: 'base', numeric: true }));
+    const rows = document.createDocumentFragment();
+    for (const signup of signups) {
+      const row = document.createElement('tr');
+      const name = document.createElement('td');
+      const nights = document.createElement('td');
+      name.textContent = signup.full_name;
+      const dates = [...signup.available_dates].sort();
+      if (!dates.length) nights.textContent = 'Dates not selected';
+      for (const date of dates) {
+        const night = document.createElement('div');
+        night.textContent = nightLabels[date] || date;
+        nights.append(night);
+      }
+      row.append(name, nights);
+      rows.append(row);
+    }
+    attendeeRows.append(rows);
+    attendeesTable.hidden = !signups.length;
+    attendeesStatus.hidden = !!signups.length;
+    attendeesStatus.textContent = signups.length ? '' : 'No signups yet.';
+  } catch {
+    if (controller.signal.aborted) return;
+    attendeesStatus.hidden = true;
+    attendeesError.hidden = false;
+  }
+}
+
+document.querySelector('#attendee-link').addEventListener('click', event => {
+  event.preventDefault();
+  attendeesDialog.showModal();
+  void loadAttendees();
+});
+document.querySelector('#retry-attendees').addEventListener('click', () => void loadAttendees());
+document.querySelector('#close-attendees').addEventListener('click', () => attendeesDialog.close());
+attendeesDialog.addEventListener('close', () => attendeeRequest?.abort());
