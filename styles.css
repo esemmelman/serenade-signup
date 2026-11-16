@@ -115,3 +115,5 @@ fieldset:disabled{opacity:.7}
   .android .title-row{grid-template-columns:82px minmax(0,1fr);gap:8px}
   .title-row h1{font-size:clamp(32px,9vw,48px)}
 }
+
+@media(min-width:801px){.temple-name{font-size:28px}}
