@@ -14,8 +14,53 @@ const errorMessage = document.querySelector('#form-error');
 const status = document.querySelector('#save-status');
 const success = document.querySelector('#success');
 const summary = document.querySelector('#signup-summary');
+const bringingOthers = document.querySelector('#bringing-others');
+const guestDialog = document.querySelector('#guest-dialog');
+const guestForm = document.querySelector('#guest-form');
+const guestInputs = [...guestForm.querySelectorAll('input')];
+const guestSummary = document.querySelector('#guest-summary');
+const guestSummaryNames = document.querySelector('#guest-summary-names');
+let additionalNames = [];
 let submitting = false;
 let attempt = null;
+
+function updateGuestSummary() {
+  bringingOthers.checked = additionalNames.length > 0;
+  guestSummary.hidden = !additionalNames.length;
+  guestSummaryNames.textContent = additionalNames.join(', ');
+}
+
+function openGuestDialog() {
+  guestInputs.forEach((input, index) => {
+    input.value = additionalNames[index] || '';
+    input.setCustomValidity('');
+  });
+  guestDialog.showModal();
+  guestInputs[0].focus();
+}
+
+bringingOthers.addEventListener('change', () => {
+  if (bringingOthers.checked) {
+    openGuestDialog();
+  } else {
+    additionalNames = [];
+    updateGuestSummary();
+  }
+});
+document.querySelector('#edit-guests').addEventListener('click', openGuestDialog);
+document.querySelector('#cancel-guests').addEventListener('click', () => guestDialog.close());
+guestDialog.addEventListener('close', updateGuestSummary);
+guestForm.addEventListener('input', () => guestInputs[0].setCustomValidity(''));
+guestForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const names = guestInputs.map(input => input.value.trim()).filter(Boolean);
+  guestInputs[0].setCustomValidity(names.length ? '' : 'Enter at least one name, or select Cancel.');
+  if (!guestForm.reportValidity()) return;
+  additionalNames = names;
+  updateGuestSummary();
+  guestDialog.close();
+});
+
 function validateContact() {
   fullName.setCustomValidity(fullName.value.trim() ? '' : 'Please enter your first and last name.');
   const digits = phone.value.replace(/\D/g, '');
@@ -46,6 +91,13 @@ function showConfirmation(data) {
     definition.textContent = value;
     summary.append(term, definition);
   }
+  if (data.additional_names.length) {
+    const term = document.createElement('dt');
+    const definition = document.createElement('dd');
+    term.textContent = 'With you';
+    definition.textContent = data.additional_names.join(', ');
+    summary.append(term, definition);
+  }
   form.hidden = true;
   success.hidden = false;
   success.focus();
@@ -56,9 +108,14 @@ form.addEventListener('submit', async event => {
   if (submitting) return;
   validateContact();
   if (!form.reportValidity()) return;
+  if (bringingOthers.checked && !additionalNames.length) {
+    openGuestDialog();
+    return;
+  }
   const data = {
     full_name: fullName.value.trim(),
-    people_count: 1,
+    people_count: 1 + additionalNames.length,
+    additional_names: [...additionalNames],
     cell_phone: phone.value.trim(),
     email: email.value.trim(),
     available_dates: [...form.querySelectorAll('[name="available_dates"]:checked')].map(input => input.value),
@@ -105,6 +162,8 @@ form.addEventListener('submit', async event => {
 
 document.querySelector('#another-signup').addEventListener('click', () => {
   form.reset();
+  additionalNames = [];
+  updateGuestSummary();
   attempt = null;
   errorMessage.hidden = true;
   status.textContent = '';
@@ -140,7 +199,7 @@ async function loadAttendees() {
     let batch;
     do {
       const params = new URLSearchParams({
-        select: 'full_name,available_dates',
+        select: 'full_name,available_dates,additional_names',
         order: 'full_name.asc,available_dates.asc',
         limit: String(pageSize),
         offset: String(signups.length),
@@ -173,6 +232,12 @@ async function loadAttendees() {
         nights.append(night);
       }
       row.append(name, nights);
+      if (signup.additional_names?.length) {
+        const guests = document.createElement('div');
+        guests.className = 'attendee-guests';
+        guests.textContent = `With ${signup.additional_names.join(', ')}`;
+        row.insertBefore(guests, nights);
+      }
       rows.append(row);
     }
     attendeeList.append(rows);

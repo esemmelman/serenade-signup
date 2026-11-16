@@ -95,7 +95,7 @@ for (const android of [false, true]) {
       requests.push(new URL(route.request().url()));
       return route.fulfill({ json: [
         { full_name: 'Zoe Test', available_dates: [] },
-        { full_name: 'alice Test', available_dates: ['2026-12-08', '2026-12-05'] },
+        { full_name: 'alice Test', available_dates: ['2026-12-08', '2026-12-05'], additional_names: ['Jamie Guest'] },
         { full_name: 'Bob Test', available_dates: ['2026-12-06'] },
       ] });
     });
@@ -116,8 +116,9 @@ for (const android of [false, true]) {
     const dialog = page.getByRole('dialog');
     await expect(dialog.locator('.attendee-name')).toHaveText(['alice Test', 'Bob Test', 'Zoe Test']);
     await expect(dialog.locator('.attendee').first().locator('.attendee-nights>div')).toHaveText(['Dec. 5 — Second night of Hanukkah', 'Dec. 8 — Fifth night of Hanukkah']);
+    await expect(dialog.locator('.attendee').first().locator('.attendee-guests')).toHaveText('With Jamie Guest');
     await expect(dialog.locator('.attendee').last()).toContainText('Dates not selected');
-    expect(requests[0].searchParams.get('select')).toBe('full_name,available_dates');
+    expect(requests[0].searchParams.get('select')).toBe('full_name,available_dates,additional_names');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: `test-results/attendees-${android ? 'android' : 'desktop'}.png`, fullPage: true });
     await dialog.getByRole('button', { name: 'Close attendee list' }).click();
@@ -142,4 +143,79 @@ test('attendee list recovers from a failed request and handles an empty list', a
   await expect(dialog.getByRole('status')).toHaveText('No signups yet.');
   await page.keyboard.press('Escape');
   await expect(dialog).not.toBeVisible();
+});
+
+
+for (const android of [false, true]) {
+  test(`additional names stay associated with the main signup (${android ? 'Android' : 'desktop'})`, async ({ page }) => {
+    if (android) {
+      await page.setViewportSize({ width: 360, height: 800 });
+      await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: 'Android Chrome' }));
+    }
+    const received = [];
+    await page.route(endpoint, route => {
+      received.push(route.request().postDataJSON());
+      return received.length === 1 ? route.fulfill({ status: 500, json: {} }) : route.fulfill({ status: 201, body: '' });
+    });
+    await page.goto('/');
+    await fillContact(page);
+    await page.getByLabel('I am bringing others', { exact: true }).check();
+    const dialog = page.getByRole('dialog', { name: 'Enter names here.' });
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator('ol li')).toHaveCount(5);
+    await expect(dialog).toContainText('These people will be associated with the main entry.');
+    await dialog.getByLabel('Additional person 1', { exact: true }).fill('  Alex Guest  ');
+    await dialog.getByLabel('Additional person 3', { exact: true }).fill('Taylor Guest');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.screenshot({ path: `test-results/guests-${android ? 'android' : 'desktop'}.png`, fullPage: true });
+    await dialog.getByRole('button', { name: 'Done', exact: true }).click();
+    await expect(dialog).not.toBeVisible();
+    await expect(page.getByLabel('First & last name')).toHaveValue('Test Serenader');
+    await expect(page.locator('#guest-summary-names')).toHaveText('Alex Guest, Taylor Guest');
+    await page.getByRole('button', { name: 'Edit names', exact: true }).click();
+    await expect(dialog.getByLabel('Additional person 1', { exact: true })).toHaveValue('Alex Guest');
+    await dialog.getByLabel('Additional person 1', { exact: true }).fill('Uncommitted change');
+    await dialog.getByRole('button', { name: 'Cancel', exact: true }).click();
+    await expect(page.locator('#guest-summary-names')).toHaveText('Alex Guest, Taylor Guest');
+    await page.getByLabel('Saturday').check();
+    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    await expect(page.getByRole('alert')).toContainText('try again');
+    await expect(page.locator('#guest-summary-names')).toHaveText('Alex Guest, Taylor Guest');
+    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    await expect(page.getByRole('heading', { name: "You're on the list!" })).toBeVisible();
+    expect(received[0]).toEqual(received[1]);
+    expect(received[1]).toMatchObject({ full_name: 'Test Serenader', people_count: 3, additional_names: ['Alex Guest', 'Taylor Guest'], available_dates: ['2026-12-05'] });
+    await expect(page.locator('#signup-summary')).toContainText('Alex Guest, Taylor Guest');
+    await page.getByRole('button', { name: 'Add another signup', exact: true }).click();
+    await expect(page.getByLabel('I am bringing others', { exact: true })).not.toBeChecked();
+    await expect(page.locator('#guest-summary')).toBeHidden();
+  });
+}
+
+test('guest dialog requires one name when enabled and supports cancel, escape, and unchecking', async ({ page }) => {
+  const received = [];
+  await page.route(endpoint, route => {
+    received.push(route.request().postDataJSON());
+    return route.fulfill({ status: 201, body: '' });
+  });
+  await page.goto('/');
+  const checkbox = page.getByLabel('I am bringing others', { exact: true });
+  const dialog = page.getByRole('dialog', { name: 'Enter names here.' });
+  await checkbox.check();
+  await dialog.getByRole('button', { name: 'Done', exact: true }).click();
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await expect(checkbox).not.toBeChecked();
+  await checkbox.check();
+  await page.keyboard.press('Escape');
+  await expect(checkbox).not.toBeChecked();
+  await checkbox.check();
+  await dialog.getByLabel('Additional person 5', { exact: true }).fill('Last Line Guest');
+  await dialog.getByRole('button', { name: 'Done', exact: true }).click();
+  await checkbox.uncheck();
+  await expect(page.locator('#guest-summary')).toBeHidden();
+  await fillContact(page);
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
+  await expect(page.getByRole('heading', { name: "You're on the list!" })).toBeVisible();
+  expect(received[0]).toMatchObject({ people_count: 1, additional_names: [] });
 });
