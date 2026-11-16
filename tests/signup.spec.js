@@ -159,9 +159,10 @@ for (const android of [false, true]) {
     });
     await page.goto('/');
     await fillContact(page);
-    await page.getByLabel('I am bringing others', { exact: true }).check();
-    const dialog = page.getByRole('dialog', { name: 'Enter names here.' });
+    await page.getByLabel('I will be bringing others (Spouse, children, Friends)', { exact: true }).check();
+    const dialog = page.getByRole('dialog', { name: 'Enter the other names here' });
     await expect(dialog).toBeVisible();
+    await expect(dialog.getByLabel('Additional person 1', { exact: true })).toBeFocused();
     await expect(dialog.locator('ol li')).toHaveCount(5);
     await expect(dialog).toContainText('These people will be associated with the main entry.');
     await dialog.getByLabel('Additional person 1', { exact: true }).fill('  Alex Guest  ');
@@ -187,7 +188,7 @@ for (const android of [false, true]) {
     expect(received[1]).toMatchObject({ full_name: 'Test Serenader', people_count: 3, additional_names: ['Alex Guest', 'Taylor Guest'], available_dates: ['2026-12-05'] });
     await expect(page.locator('#signup-summary')).toContainText('Alex Guest, Taylor Guest');
     await page.getByRole('button', { name: 'Add another signup', exact: true }).click();
-    await expect(page.getByLabel('I am bringing others', { exact: true })).not.toBeChecked();
+    await expect(page.getByLabel('I will be bringing others (Spouse, children, Friends)', { exact: true })).not.toBeChecked();
     await expect(page.locator('#guest-summary')).toBeHidden();
   });
 }
@@ -199,8 +200,8 @@ test('guest dialog requires one name when enabled and supports cancel, escape, a
     return route.fulfill({ status: 201, body: '' });
   });
   await page.goto('/');
-  const checkbox = page.getByLabel('I am bringing others', { exact: true });
-  const dialog = page.getByRole('dialog', { name: 'Enter names here.' });
+  const checkbox = page.getByLabel('I will be bringing others (Spouse, children, Friends)', { exact: true });
+  const dialog = page.getByRole('dialog', { name: 'Enter the other names here' });
   await checkbox.check();
   await dialog.getByRole('button', { name: 'Done', exact: true }).click();
   await expect(dialog).toBeVisible();
