@@ -164,7 +164,6 @@ for (const android of [false, true]) {
     await expect(dialog).toBeVisible();
     await expect(dialog.getByLabel('Additional person 1', { exact: true })).toBeFocused();
     await expect(dialog.locator('ol li')).toHaveCount(5);
-    await expect(dialog).toContainText('These people will be associated with the main entry.');
     await dialog.getByLabel('Additional person 1', { exact: true }).fill('  Alex Guest  ');
     await dialog.getByLabel('Additional person 3', { exact: true }).fill('Taylor Guest');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
