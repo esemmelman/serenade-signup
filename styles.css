@@ -89,7 +89,7 @@ fieldset:disabled{opacity:.7}
 .title-block{min-width:0;transform:translateX(-12px)}
 .temple-name{font-size:20px;font-weight:600;line-height:1.35;color:#244fbc;margin:0 0 8px}
 .android .title-block{transform:translateX(-36px)}
-.android .temple-name{font-size:16px}
+.android .temple-name{font-size:22px}
 .attendee-link-wrap{display:flex;align-items:center;justify-content:center;min-width:0}
 .attendee-link{display:inline-block;transform:rotate(-28deg);padding:10px 2px;color:#244fbc;font-size:20px;font-weight:700;line-height:1.25;text-align:center;text-decoration:underline;text-underline-offset:4px}
 .attendee-link span{display:block;white-space:nowrap}
