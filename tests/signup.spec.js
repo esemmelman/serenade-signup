@@ -143,30 +143,48 @@ test('attendee list recovers from a failed request and handles an empty list', a
 });
 
 
-test('name reminder bubble appears once per signup without a browser popup', async ({ page }) => {
-  const messages = [];
-  page.on('dialog', async dialog => {
-    messages.push(dialog.message());
-    await dialog.accept();
+for (const android of [false, true]) {
+  test(`name reminder stays above the form for three seconds (${android ? 'Android' : 'desktop'})`, async ({ page }) => {
+    if (android) {
+      await page.setViewportSize({ width: 360, height: 800 });
+      await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: 'Android Chrome' }));
+    }
+    const messages = [];
+    page.on('dialog', async dialog => {
+      messages.push(dialog.message());
+      await dialog.accept();
+    });
+    await page.clock.install();
+    await page.route(endpoint, route => route.fulfill({ status: 201, body: '' }));
+    await page.goto('/');
+    await expect(page.getByLabel('Number of people')).toHaveCount(0);
+    const bubble = page.locator('#name-reminder');
+    const name = page.getByLabel('First & last name');
+    await expect(bubble).toBeHidden();
+    await name.focus();
+    await expect(bubble).toBeVisible();
+    await expect(bubble).toHaveText('Please add any others joining you separately.');
+    await expect(name).toBeFocused();
+    expect(messages).toHaveLength(0);
+    const bubbleBox = await bubble.boundingBox();
+    const nameBox = await name.boundingBox();
+    expect(bubbleBox.y + bubbleBox.height).toBeLessThan(nameBox.y);
+    await page.getByLabel('Email address').focus();
+    await expect(bubble).toBeVisible();
+    await page.clock.fastForward(2900);
+    await expect(bubble).toBeVisible();
+    await page.clock.fastForward(100);
+    await expect(bubble).toBeHidden();
+    await name.focus();
+    await expect(bubble).toBeHidden();
+    await fillContact(page);
+    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    await page.getByRole('button', { name: 'Add another signup' }).click();
+    await expect(bubble).toBeVisible();
+    const nextBubbleBox = await bubble.boundingBox();
+    const nextNameBox = await name.boundingBox();
+    expect(nextBubbleBox.y + nextBubbleBox.height).toBeLessThan(nextNameBox.y - 40);
+    await page.screenshot({ path: `test-results/name-reminder-${android ? 'android' : 'desktop'}.png`, fullPage: true });
+    expect(messages).toHaveLength(0);
   });
-  await page.route(endpoint, route => route.fulfill({ status: 201, body: '' }));
-  await page.goto('/');
-  await expect(page.getByLabel('Number of people')).toHaveCount(0);
-  const bubble = page.locator('#name-reminder');
-  await expect(bubble).toBeHidden();
-  await page.getByLabel('First & last name').focus();
-  await expect(bubble).toBeVisible();
-  await expect(bubble).toHaveText('Please add any one else separately.');
-  await expect(page.getByLabel('First & last name')).toBeFocused();
-  expect(messages).toHaveLength(0);
-  await page.screenshot({ path: 'test-results/name-reminder-bubble.png', fullPage: true });
-  await page.getByLabel('Email address').focus();
-  await expect(bubble).toBeHidden();
-  await page.getByLabel('First & last name').focus();
-  await expect(bubble).toBeHidden();
-  await fillContact(page);
-  await page.getByRole('button', { name: 'Submit', exact: true }).click();
-  await page.getByRole('button', { name: 'Add another signup' }).click();
-  await expect(bubble).toBeVisible();
-  expect(messages).toHaveLength(0);
-});
+}

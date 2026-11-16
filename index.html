@@ -34,7 +34,6 @@
               <label for="full-name">First &amp; last name <span aria-hidden="true">*</span>
                 <input id="full-name" name="full_name" autocomplete="name" maxlength="150" required placeholder="Your full name" aria-describedby="name-reminder">
               </label>
-              <div id="name-reminder" class="reminder-bubble" role="status" hidden>Please add any one else separately.</div>
             </div>
             <label for="cell-phone">Cell phone number <span aria-hidden="true">*</span>
               <input id="cell-phone" name="cell_phone" type="tel" autocomplete="tel" maxlength="30" required placeholder="(555) 123-4567" aria-describedby="phone-hint">
@@ -82,6 +81,8 @@
     </section>
     <footer class="page-footer">Hanukkah Serenading · December 2026</footer>
   </main>
+
+  <div id="name-reminder" class="reminder-bubble" role="status" hidden>Please add any others joining you separately.</div>
 
   <dialog id="attendees" aria-labelledby="attendees-title">
     <div class="attendees-heading">

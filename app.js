@@ -17,16 +17,33 @@ const summary = document.querySelector('#signup-summary');
 let submitting = false;
 let attempt = null;
 let nameReminderShown = false;
+let nameReminderTimer;
+
+function positionNameReminder() {
+  if (nameReminder.hidden) return;
+  nameReminder.style.top = `${16 + (window.visualViewport?.offsetTop || 0)}px`;
+  const minimumFieldTop = nameReminder.getBoundingClientRect().bottom + 64;
+  const fieldTop = fullName.getBoundingClientRect().top;
+  if (fieldTop < minimumFieldTop) {
+    window.scrollBy({ top: fieldTop - minimumFieldTop, behavior: 'instant' });
+  }
+}
+window.visualViewport?.addEventListener('resize', positionNameReminder);
 
 fullName.addEventListener('focus', () => {
   if (nameReminderShown) return;
   nameReminderShown = true;
   nameReminder.hidden = false;
+  fullName.scrollIntoView({ block: 'center', behavior: 'instant' });
+  positionNameReminder();
+  nameReminderTimer = setTimeout(() => { nameReminder.hidden = true; }, 3000);
 });
 
-fullName.addEventListener('blur', () => { nameReminder.hidden = true; });
 fullName.addEventListener('keydown', event => {
-  if (event.key === 'Escape') nameReminder.hidden = true;
+  if (event.key === 'Escape') {
+    clearTimeout(nameReminderTimer);
+    nameReminder.hidden = true;
+  }
 });
 
 function validateContact() {
@@ -45,6 +62,8 @@ form.addEventListener('input', () => {
 });
 
 function showConfirmation(data) {
+  clearTimeout(nameReminderTimer);
+  nameReminder.hidden = true;
   summary.replaceChildren();
   const dates = data.available_dates.map(value => new Date(`${value}T12:00:00`).toLocaleDateString('en-US', {
     weekday: 'short', month: 'short', day: 'numeric',
@@ -124,6 +143,7 @@ document.querySelector('#another-signup').addEventListener('click', () => {
   success.hidden = true;
   summary.replaceChildren();
   form.hidden = false;
+  clearTimeout(nameReminderTimer);
   nameReminderShown = false;
   nameReminder.hidden = true;
   fullName.focus();
