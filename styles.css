@@ -56,7 +56,7 @@ fieldset:disabled{opacity:.7}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 .android .invitation{font-size:22px}
-.android .invitation strong{font-size:16px}
+.android .invitation strong{font-size:22px}
 .android .invitation-line{display:block;white-space:nowrap}
 .android label{font-size:26px}
 .android .contact-fields input{font-size:22px;height:60px}

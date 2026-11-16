@@ -106,7 +106,7 @@ for (const android of [false, true]) {
     await expect(page.getByRole('button', { name: 'Submit', exact: true })).toHaveText('Submit');
     if (android) {
       const lines = page.locator('.invitation-line');
-      await expect(lines).toHaveText(['Yes, I want to', 'Hanukkah Serenading!']);
+      await expect(lines).toHaveText(['Yes, I want to go', 'Hanukkah Serenading!']);
       for (const line of await lines.all()) {
         expect(await line.evaluate(element => {
           const range = document.createRange();
