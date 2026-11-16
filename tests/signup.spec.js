@@ -68,7 +68,7 @@ test('Android form fits the viewport and saves selected availability', async ({ 
   await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: 'Android Chrome' }));
   await page.route(endpoint, route => route.fulfill({ status: 201, body: '' }));
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Hanukkah Serenading.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Hanukkah Serenading' })).toBeVisible();
   await fillContact(page);
   await page.getByLabel('Sunday').check();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
