@@ -7,12 +7,11 @@ main{max-width:900px;margin:0 auto;padding:54px 28px 28px}
 h1{font-family:'DM Serif Text',serif;font-size:clamp(48px,8vw,76px);font-weight:400;line-height:1.04;letter-spacing:-.04em;color:#244fbc;margin:0}
 h1 em{font-weight:400;color:#193877}
 .invitation{font-size:16px;line-height:1.6;color:#52617a;margin:18px 0 0}
-.invitation strong{display:block;font-size:22px;line-height:1.4}
+.invitation strong{display:block;font-size:inherit;line-height:1.4}
 .signup-card{background:#fff;border:1px solid #dddfe5;border-radius:18px;box-shadow:0 14px 45px #172c5607;overflow:hidden}
 form{padding:32px 38px}
-.form-heading{margin-bottom:28px}
 h2{font-family:'DM Serif Text',serif;font-size:30px;font-weight:400;letter-spacing:-.02em;margin:0 0 8px}
-.form-heading p,.availability>p{font-size:13px;line-height:1.6;color:#67738a;margin:0}
+.availability>p{font-size:13px;line-height:1.6;color:#67738a;margin:0}
 fieldset{border:0;padding:0;margin:0;min-width:0}
 .contact-fields{display:grid;grid-template-columns:1.2fr 1fr;gap:24px 22px}
 label{font-size:13px;font-weight:600;display:block;min-width:0}
@@ -57,14 +56,14 @@ fieldset:disabled{opacity:.7}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 .android .invitation{font-size:22px}
-.android .invitation strong{font-size:30px}
-.android label{font-size:22px}
+.android .invitation strong{font-size:18px}
+.android label{font-size:26px}
 .android .contact-fields input{font-size:22px;height:60px}
-.android .availability legend{font-size:24px}
+.android .availability legend{font-size:28px}
 .android .availability>p{font-size:20px}
-.android .day{font-size:20px}
-.android .date-content strong{font-size:34px}
-.android .night{font-size:18px}
+.android .day{font-size:24px}
+.android .date-content strong{font-size:38px}
+.android .night{font-size:22px}
 .android .form-footer>p,.android .page-footer{font-size:18px}
 .android button{font-size:22px}
 .android button>span{font-size:27px}
@@ -73,9 +72,9 @@ fieldset:disabled{opacity:.7}
 .android .success-check{font-size:38px}
 @media(max-width:600px){
   .android .date-options{grid-template-columns:1fr;gap:12px}
-  .android .date-content{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;padding:16px 48px 16px 16px}
+  .android .date-content{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;padding:16px 48px 16px 16px}
   .android .day{grid-column:1;padding:0}
-  .android .date-content strong{grid-column:2;grid-row:1/3}
-  .android .night{grid-column:1;grid-row:2;margin:0}
+  .android .date-content strong{grid-column:1;grid-row:2}
+  .android .night{grid-column:1;grid-row:3;margin:0}
   .android .date-option>input{width:22px;height:22px;right:14px;top:50%;transform:translateY(-50%)}
 }
