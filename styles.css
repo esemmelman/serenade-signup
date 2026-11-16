@@ -128,10 +128,10 @@ fieldset:disabled{opacity:.7}
 #guest-dialog{width:min(570px,calc(100% - 32px));max-height:90dvh;padding:0;border:1px solid #dbe0e9;border-radius:14px;color:#172c56;background:white;box-shadow:0 20px 80px #172c5625}
 #guest-dialog::backdrop{background:#172c5680}
 #guest-dialog form{padding:30px}
-.guest-name-lines{margin:0;padding-left:30px}
+.guest-name-lines{margin:20px 0 0;padding-left:30px}
 .guest-name-lines li{padding-left:10px;margin-bottom:18px;font-size:18px}
-.guest-name-lines input{width:100%;min-width:0;min-height:46px;padding:8px 2px;border:0;border-bottom:1px solid #8b9cba;border-radius:0;background:transparent;font-size:18px}
-.guest-name-lines input:focus{box-shadow:none;border-bottom:2px solid #244fbc}
+.guest-name-lines input{width:100%;min-width:0;min-height:48px;padding:12px 12px 2px;border:0;border-bottom:1px solid #8b9cba;border-radius:0;background:transparent;font-size:18px;font-weight:400;line-height:1.25;text-decoration:none;appearance:none}
+.guest-name-lines input:focus{outline:0;box-shadow:none;border-bottom:2px solid #244fbc}
 .guest-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:28px}
 .guest-actions button{width:auto}
 .android .bringing-others{font-size:22px}
