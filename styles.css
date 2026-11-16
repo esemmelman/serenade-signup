@@ -1,14 +1,14 @@
-:root{font-family:'DM Sans',sans-serif;color:#172c56;background:#f6f4eb;font-synthesis:none;color-scheme:light}
+:root{font-family:'DM Sans',sans-serif;color:#172c56;background:#eef3ff;font-synthesis:none;color-scheme:light}
 *{box-sizing:border-box}
-body{margin:0;border-top:6px solid #eccb52}
+body{margin:0;min-height:100vh;border-top:6px solid #e5b52d;background:radial-gradient(ellipse at top left,#dce9ff,transparent 55%),linear-gradient(135deg,#eef3ff,#fff6dc 55%,#e3f4ec)}
 main{max-width:900px;margin:0 auto;padding:54px 28px 28px}
 .intro{text-align:center;margin-bottom:34px}
 .event-dates{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#52658a;margin:0 0 18px}
 h1{font-family:'DM Serif Text',serif;font-size:clamp(48px,8vw,76px);font-weight:400;line-height:1.04;letter-spacing:-.04em;color:#244fbc;margin:0}
-h1 em{font-weight:400;color:#193877}
+h1 em{font-weight:400;color:#18736e}
 .invitation{font-size:16px;line-height:1.6;color:#52617a;margin:18px 0 0}
 .invitation strong{display:block;font-size:inherit;line-height:1.4}
-.signup-card{background:#fff;border:1px solid #dddfe5;border-radius:18px;box-shadow:0 14px 45px #172c5607;overflow:hidden}
+.signup-card{background:linear-gradient(135deg,#ffffff,#f1f6ff);border:1px solid #afc4e8;border-radius:18px;box-shadow:0 14px 45px #244fbc12;overflow:hidden}
 form{padding:32px 38px}
 h2{font-family:'DM Serif Text',serif;font-size:30px;font-weight:400;letter-spacing:-.02em;margin:0 0 8px}
 .availability>p{font-size:13px;line-height:1.6;color:#67738a;margin:0}
@@ -18,9 +18,9 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
 label{font-size:13px;font-weight:600;display:block;min-width:0}
 input{font:inherit;color:#172c56}
 .contact-fields input{width:100%;min-width:0;margin-top:9px;height:48px;padding:12px 14px;border:1px solid #d5dbe5;border-radius:7px;background:#fcfcfd;font-size:15px;font-weight:400;transition:border-color .15s,box-shadow .15s}
-input::placeholder{color:#8a93a5;opacity:1}
+input::placeholder{color:#68768e;opacity:1}
 .contact-fields input:focus{outline:0;border-color:#244fbc;box-shadow:0 0 0 3px #244fbc15;background:#fff}
-.availability{border-top:1px solid #e9ebef;margin-top:32px;padding-top:26px}
+.availability{border-top:2px solid #e5cb76;margin-top:32px;padding-top:26px}
 .availability legend{float:left;width:100%;font-size:16px;font-weight:600;padding:0;margin-bottom:7px}
 .availability legend span{font-size:11px;font-weight:400;color:#7a8497;margin-left:6px}
 .availability>p{clear:both;margin-bottom:18px}
@@ -34,23 +34,23 @@ input::placeholder{color:#8a93a5;opacity:1}
 .date-option:hover .date-content{border-color:#8b9fc8}
 .date-option>input:checked+.date-content{background:#fff5cc;border-color:#d8b643}
 .date-option>input:focus-visible+.date-content{outline:3px solid #244fbc50;outline-offset:3px}
-.form-footer{display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid #e9ebef;margin-top:28px;padding-top:24px}
+.form-footer{display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid #b9cde9;margin-top:28px;padding-top:24px}
 .form-footer>p{font-size:11px;color:#7a8496;line-height:1.6;max-width:240px;margin:0}
-button{font:inherit;cursor:pointer;border:0;border-radius:7px;padding:14px 22px;background:#244fbc;color:#fff;font-size:14px;font-weight:600;min-height:48px;transition:background .15s}
+button{font:inherit;cursor:pointer;border:0;border-radius:7px;padding:14px 22px;background:linear-gradient(120deg,#244fbc,#426bcf);color:#fff;font-size:14px;font-weight:600;min-height:48px;transition:background .15s}
 button:hover:not(:disabled){background:#1b3f9a}
 button>span{padding-left:28px;font-size:19px;line-height:1}
 button:focus-visible{outline:3px solid #8da7e7;outline-offset:3px}
 button:disabled{opacity:.65;cursor:wait}
 fieldset:disabled{opacity:.7}
 #form-error{font-size:13px;line-height:1.6;background:#fff0ed;color:#9b3528;padding:12px 14px;border-radius:7px;margin:20px 0 0}
-.page-footer{text-align:center;color:#7b8391;font-size:11px;margin-top:22px}
+.page-footer{text-align:center;color:#45677b;font-size:11px;margin-top:22px}
 .success{padding:48px 38px;text-align:center;outline:0}
 .success-check{display:grid;place-items:center;margin:0 auto 20px;width:54px;height:54px;border-radius:50%;background:#fff1b8;color:#244fbc;font-size:28px}
 .success>p{font-size:14px;color:#67738a;line-height:1.6}
 .success dl{max-width:480px;margin:28px auto;text-align:left;background:#f7f8fb;border-radius:8px;padding:18px 22px;display:grid;grid-template-columns:100px 1fr;gap:12px;font-size:13px;line-height:1.5}
 .success dt{color:#6a768d}.success dd{margin:0;overflow-wrap:anywhere}
-.secondary-button{background:#edf1fb;color:#244fbc}
-.secondary-button:hover:not(:disabled){background:#e0e8fb}
+.secondary-button{background:#ffedb0;color:#6b4b0f}
+.secondary-button:hover:not(:disabled){background:#ffe18a}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 [hidden]{display:none!important}
 @media(max-width:600px){main{padding:32px 16px 24px}.intro{margin-bottom:26px}.event-dates{font-size:10px}.invitation{font-size:14px}form{padding:26px 22px}.contact-fields{grid-template-columns:1fr;gap:20px}.contact-fields input{font-size:16px}.date-options{gap:8px}.date-content{padding:15px 10px}.date-option>input{right:9px;top:14px;width:16px;height:16px}.day{font-size:10px;padding-right:18px}.date-content strong{font-size:22px}.night{font-size:10px}.form-footer{align-items:stretch;flex-direction:column;gap:16px}.form-footer>p{max-width:none}button{width:100%}.success{padding:34px 22px}.success dl{grid-template-columns:76px 1fr;padding:16px;gap:12px}}
@@ -84,7 +84,7 @@ fieldset:disabled{opacity:.7}
 .title-row{display:grid;grid-template-columns:clamp(110px,12vw,160px) minmax(0,1fr) clamp(110px,12vw,160px);align-items:center;gap:16px}
 .title-row::after{content:""}
 .title-block{min-width:0;transform:translateX(-12px)}
-.temple-name{font-size:20px;font-weight:600;line-height:1.35;color:#244fbc;margin:0 0 8px}
+.temple-name{font-size:20px;font-weight:600;line-height:1.35;color:#92610e;margin:0 0 8px}
 .android .title-block{transform:translateX(-36px)}
 .android .temple-name{font-size:22px}
 .attendee-link-wrap{display:flex;align-items:center;justify-content:center;min-width:0}
@@ -92,7 +92,7 @@ fieldset:disabled{opacity:.7}
 .attendee-link span{display:block;white-space:nowrap}
 .attendee-link:hover{color:#193877}
 .attendee-link:focus-visible{outline:3px solid #8da7e7;outline-offset:3px;border-radius:4px}
-#attendees{width:min(700px,calc(100% - 32px));max-height:88dvh;padding:26px;border:1px solid #dbe0e9;border-radius:14px;color:#172c56;background:white;box-shadow:0 20px 80px #172c5625}
+#attendees{width:min(700px,calc(100% - 32px));max-height:88dvh;padding:26px;border:1px solid #dbe0e9;border-radius:14px;color:#172c56;background:linear-gradient(150deg,#f2f6ff,#ffffff);box-shadow:0 20px 80px #172c5625}
 #attendees::backdrop{background:#172c5680}
 .attendees-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
 .attendees-heading h2{margin:0}
@@ -115,7 +115,7 @@ fieldset:disabled{opacity:.7}
 
 @media(min-width:801px){.temple-name{font-size:28px}}
 
-.committee-credit{font-size:16px;line-height:1.5;color:#52617a;margin:0 0 12px}
+.committee-credit{font-size:16px;line-height:1.5;color:#386c72;margin:0 0 12px}
 .android .committee-credit{font-size:18px}
 
 .phone-field{min-width:0}
@@ -125,7 +125,7 @@ fieldset:disabled{opacity:.7}
 #guest-summary p{margin:0}
 .text-button{min-height:36px;padding:6px 0;background:transparent;color:#244fbc;text-decoration:underline;text-underline-offset:3px;font-size:14px}
 .text-button:hover:not(:disabled){background:transparent;color:#193877}
-#guest-dialog{width:min(570px,calc(100% - 32px));max-height:90dvh;padding:0;border:1px solid #dbe0e9;border-radius:14px;color:#172c56;background:white;box-shadow:0 20px 80px #172c5625}
+#guest-dialog{width:min(570px,calc(100% - 32px));max-height:90dvh;padding:0;border:1px solid #dbe0e9;border-radius:14px;color:#172c56;background:linear-gradient(150deg,#f2f6ff,#ffffff);box-shadow:0 20px 80px #172c5625}
 #guest-dialog::backdrop{background:#172c5680}
 #guest-dialog form{padding:30px}
 .guest-name-lines{margin:20px 0 0;padding-left:30px}
@@ -139,3 +139,24 @@ fieldset:disabled{opacity:.7}
 .android .guest-name-lines li,.android .guest-name-lines input{font-size:22px}
 .attendee-guests{color:#52617a;overflow-wrap:anywhere}
 @media(max-width:600px){#guest-dialog form{padding:24px 20px}.guest-name-lines{padding-left:26px}}
+
+/* Blue, gold, and teal carry through the form and both dialogs. */
+h2{color:#244fbc}
+#full-name{background:#eaf1ff;border-color:#a2b9e7}
+#cell-phone{background:#fff5d6;border-color:#dfc273}
+#email{background:#e8f7ee;border-color:#98c7b0}
+.bringing-others{padding:12px;border:1px solid #e0bd58;border-radius:9px;background:#fff0bc;color:#684b16}
+.date-option:nth-child(1) .date-content{background:#e8f0ff;border-color:#aac0e8}
+.date-option:nth-child(2) .date-content{background:#fff2cc;border-color:#dec16b}
+.date-option:nth-child(3) .date-content{background:#e6f6ef;border-color:#98cdb6}
+.date-option>input:checked+.date-content{background:#ffe498;border-color:#ad7916;box-shadow:inset 0 0 0 1px #ad7916}
+.date-content .day,.date-content .night{color:#495f74}
+.attendee{padding:14px;border-radius:10px;background:#eaf1ff}
+.attendee:nth-child(even){background:#e7f6ed}
+.guest-name-lines li::marker{color:#244fbc;font-weight:700}
+.guest-name-lines li:nth-child(1) input{background:#eaf1ff;border-bottom-color:#557dcb}
+.guest-name-lines li:nth-child(2) input{background:#fff2cb;border-bottom-color:#b98b22}
+.guest-name-lines li:nth-child(3) input{background:#e4f5ec;border-bottom-color:#378b72}
+.guest-name-lines li:nth-child(4) input{background:#f0e9fc;border-bottom-color:#8a67b4}
+.guest-name-lines li:nth-child(5) input{background:#ffebdd;border-bottom-color:#c37842}
+.guest-name-lines input:focus{border-bottom-color:#244fbc}

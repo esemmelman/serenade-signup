@@ -160,7 +160,7 @@ for (const android of [false, true]) {
     await page.goto('/');
     await fillContact(page);
     await page.getByLabel('I will be bringing others (Spouse, children, Friends)', { exact: true }).check();
-    const dialog = page.getByRole('dialog', { name: 'Enter the other names here' });
+    const dialog = page.getByRole('dialog', { name: 'Enter other names here:' });
     await expect(dialog).toBeVisible();
     await expect(dialog.getByLabel('Additional person 1', { exact: true })).toBeFocused();
     await expect(dialog.locator('ol li')).toHaveCount(5);
@@ -200,7 +200,7 @@ test('guest dialog requires one name when enabled and supports cancel, escape, a
   });
   await page.goto('/');
   const checkbox = page.getByLabel('I will be bringing others (Spouse, children, Friends)', { exact: true });
-  const dialog = page.getByRole('dialog', { name: 'Enter the other names here' });
+  const dialog = page.getByRole('dialog', { name: 'Enter other names here:' });
   await checkbox.check();
   await dialog.getByRole('button', { name: 'Done', exact: true }).click();
   await expect(dialog).toBeVisible();
