@@ -32,9 +32,8 @@
         <fieldset id="signup-fields">
           <div class="contact-fields">
             <div class="name-field">
-              <div id="name-reminder" class="reminder-bubble" role="status" hidden>Please add any others joining you separately.</div>
-              <label for="full-name">First &amp; last name <span aria-hidden="true">*</span>
-                <input id="full-name" name="full_name" autocomplete="name" maxlength="150" required placeholder="Your full name" aria-describedby="name-reminder">
+              <label for="full-name"><span id="name-label">First &amp; last name <span aria-hidden="true">*</span></span><span id="name-reminder" class="name-reminder"> - Please add anyone who is going with you separately</span>
+                <input id="full-name" name="full_name" autocomplete="name" maxlength="150" required placeholder="Your full name" aria-labelledby="name-label" aria-describedby="name-reminder">
               </label>
             </div>
             <label for="cell-phone">Cell phone number <span aria-hidden="true">*</span>
