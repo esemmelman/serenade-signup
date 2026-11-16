@@ -63,8 +63,9 @@ test('lost responses preserve entries and retry the same request ID', async ({ p
   expect(received[1]).toEqual(received[0]);
 });
 
-test('mobile form fits the viewport and saves selected availability', async ({ page }) => {
+test('Android form fits the viewport and saves selected availability', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
+  await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: 'Android Chrome' }));
   await page.route(endpoint, route => route.fulfill({ status: 201, body: '' }));
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Hanukkah Serenading.' })).toBeVisible();

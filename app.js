@@ -1,3 +1,5 @@
+document.documentElement.classList.toggle('android', /Android/i.test(navigator.userAgent));
+
 const SUPABASE_URL = 'https://fgomaujsdblpzxhnnqrg.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_JOUqLZDnfGu_yCa6k6FVDQ_AYwpr72i';
 const TABLE = 'hanukkah_serenading_signups';
