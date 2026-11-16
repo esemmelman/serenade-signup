@@ -21,12 +21,7 @@ let nameReminderTimer;
 
 function positionNameReminder() {
   if (nameReminder.hidden) return;
-  nameReminder.style.top = `${16 + (window.visualViewport?.offsetTop || 0)}px`;
-  const minimumFieldTop = nameReminder.getBoundingClientRect().bottom + 64;
-  const fieldTop = fullName.getBoundingClientRect().top;
-  if (fieldTop < minimumFieldTop) {
-    window.scrollBy({ top: fieldTop - minimumFieldTop, behavior: 'instant' });
-  }
+  fullName.closest('.name-field').scrollIntoView({ block: 'center', behavior: 'instant' });
 }
 window.visualViewport?.addEventListener('resize', positionNameReminder);
 
@@ -34,9 +29,8 @@ fullName.addEventListener('focus', () => {
   if (nameReminderShown) return;
   nameReminderShown = true;
   nameReminder.hidden = false;
-  fullName.scrollIntoView({ block: 'center', behavior: 'instant' });
   positionNameReminder();
-  nameReminderTimer = setTimeout(() => { nameReminder.hidden = true; }, 3000);
+  nameReminderTimer = setTimeout(() => { nameReminder.hidden = true; }, 4500);
 });
 
 fullName.addEventListener('keydown', event => {

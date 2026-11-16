@@ -144,7 +144,7 @@ test('attendee list recovers from a failed request and handles an empty list', a
 
 
 for (const android of [false, true]) {
-  test(`name reminder stays above the form for three seconds (${android ? 'Android' : 'desktop'})`, async ({ page }) => {
+  test(`name reminder stays just above the label for 4.5 seconds (${android ? 'Android' : 'desktop'})`, async ({ page }) => {
     if (android) {
       await page.setViewportSize({ width: 360, height: 800 });
       await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: 'Android Chrome' }));
@@ -167,11 +167,13 @@ for (const android of [false, true]) {
     await expect(name).toBeFocused();
     expect(messages).toHaveLength(0);
     const bubbleBox = await bubble.boundingBox();
-    const nameBox = await name.boundingBox();
-    expect(bubbleBox.y + bubbleBox.height).toBeLessThan(nameBox.y);
+    const labelBox = await page.locator('label[for="full-name"]').boundingBox();
+    expect(labelBox.y - bubbleBox.y - bubbleBox.height).toBeGreaterThanOrEqual(10);
+    expect(labelBox.y - bubbleBox.y - bubbleBox.height).toBeLessThanOrEqual(14);
+    expect(Math.abs(bubbleBox.x - labelBox.x)).toBeLessThan(1);
     await page.getByLabel('Email address').focus();
     await expect(bubble).toBeVisible();
-    await page.clock.fastForward(2900);
+    await page.clock.fastForward(4400);
     await expect(bubble).toBeVisible();
     await page.clock.fastForward(100);
     await expect(bubble).toBeHidden();
@@ -182,8 +184,9 @@ for (const android of [false, true]) {
     await page.getByRole('button', { name: 'Add another signup' }).click();
     await expect(bubble).toBeVisible();
     const nextBubbleBox = await bubble.boundingBox();
-    const nextNameBox = await name.boundingBox();
-    expect(nextBubbleBox.y + nextBubbleBox.height).toBeLessThan(nextNameBox.y - 40);
+    const nextLabelBox = await page.locator('label[for="full-name"]').boundingBox();
+    expect(nextLabelBox.y - nextBubbleBox.y - nextBubbleBox.height).toBeGreaterThanOrEqual(10);
+    expect(nextLabelBox.y - nextBubbleBox.y - nextBubbleBox.height).toBeLessThanOrEqual(14);
     await page.screenshot({ path: `test-results/name-reminder-${android ? 'android' : 'desktop'}.png`, fullPage: true });
     expect(messages).toHaveLength(0);
   });
