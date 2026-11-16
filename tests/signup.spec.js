@@ -117,17 +117,16 @@ for (const android of [false, true]) {
     }
     await page.getByRole('link', { name: "See Who's Going" }).click();
     const dialog = page.getByRole('dialog');
-    await expect(dialog.locator('tbody tr td:first-child')).toHaveText(['alice Test', 'Bob Test', 'Zoe Test']);
-    await expect(dialog.locator('tbody tr').first().locator('td').last()).toContainText('Dec. 5');
-    await expect(dialog.locator('tbody tr').first().locator('td').last()).toContainText('Fifth night');
-    await expect(dialog.locator('tbody tr').last()).toContainText('Dates not selected');
+    await expect(dialog.locator('.attendee-name')).toHaveText(['alice Test', 'Bob Test', 'Zoe Test']);
+    await expect(dialog.locator('.attendee').first().locator('.attendee-nights>div')).toHaveText(['Dec. 5 — Second night', 'Dec. 8 — Fifth night']);
+    await expect(dialog.locator('.attendee').last()).toContainText('Dates not selected');
     expect(requests[0].searchParams.get('select')).toBe('full_name,available_dates');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: `test-results/attendees-${android ? 'android' : 'desktop'}.png`, fullPage: true });
     await dialog.getByRole('button', { name: 'Close attendee list' }).click();
     await expect(dialog).not.toBeVisible();
     await page.getByRole('link', { name: "See Who's Going" }).click();
-    await expect(dialog.locator('tbody tr')).toHaveCount(3);
+    await expect(dialog.locator('.attendee')).toHaveCount(3);
     expect(requests).toHaveLength(2);
   });
 }

@@ -95,14 +95,13 @@ fieldset:disabled{opacity:.7}
 .attendees-heading h2{margin:0}
 .attendees-heading button{width:auto;flex-shrink:0}
 #attendees-status,#attendees-error{font-size:16px;line-height:1.6}
-#attendees-table{width:100%;border-collapse:collapse;text-align:left;table-layout:fixed;font-size:16px;line-height:1.6}
-#attendees-table th,#attendees-table td{padding:12px 10px;border-bottom:1px solid #e9ebef;vertical-align:top;overflow-wrap:anywhere}
-#attendees-table th:first-child{width:42%}
-#attendees-table th{color:#52617a;font-weight:600}
-#attendees-table td>div+div{margin-top:6px}
+#attendee-list{list-style:none;margin:0;padding:0;font-size:16px;line-height:1.6}
+.attendee+.attendee{margin-top:1.6em}
+.attendee-name{display:block;white-space:nowrap;overflow-x:auto}
+.attendee-nights>div{overflow-wrap:anywhere}
 .android .attendee-link{font-size:16px}
-.android #attendees-table,.android #attendees-status,.android #attendees-error{font-size:20px}
-@media(max-width:600px){#attendees{padding:20px 14px}.attendees-heading h2{font-size:28px}.attendees-heading button{font-size:16px}#attendees-table th,#attendees-table td{padding:12px 6px}}
+.android #attendee-list,.android #attendees-status,.android #attendees-error{font-size:20px}
+@media(max-width:600px){#attendees{padding:20px 14px}.attendees-heading h2{font-size:28px}.attendees-heading button{font-size:16px}}
 
 @media(max-width:600px){
   .title-row{grid-template-columns:110px minmax(0,1fr);gap:12px}

@@ -117,8 +117,7 @@ document.querySelector('#another-signup').addEventListener('click', () => {
 const attendeesDialog = document.querySelector('#attendees');
 const attendeesStatus = document.querySelector('#attendees-status');
 const attendeesError = document.querySelector('#attendees-error');
-const attendeesTable = document.querySelector('#attendees-table');
-const attendeeRows = document.querySelector('#attendee-rows');
+const attendeeList = document.querySelector('#attendee-list');
 const nightLabels = {
   '2026-12-05': 'Dec. 5 — Second night',
   '2026-12-06': 'Dec. 6 — Third night',
@@ -130,8 +129,8 @@ async function loadAttendees() {
   attendeeRequest?.abort();
   const controller = new AbortController();
   attendeeRequest = controller;
-  attendeeRows.replaceChildren();
-  attendeesTable.hidden = true;
+  attendeeList.replaceChildren();
+  attendeeList.hidden = true;
   attendeesError.hidden = true;
   attendeesStatus.hidden = false;
   attendeesStatus.textContent = 'Loading attendees…';
@@ -159,9 +158,12 @@ async function loadAttendees() {
     signups.sort((a, b) => a.full_name.localeCompare(b.full_name, 'en', { sensitivity: 'base', numeric: true }));
     const rows = document.createDocumentFragment();
     for (const signup of signups) {
-      const row = document.createElement('tr');
-      const name = document.createElement('td');
-      const nights = document.createElement('td');
+      const row = document.createElement('li');
+      row.className = 'attendee';
+      const name = document.createElement('strong');
+      name.className = 'attendee-name';
+      const nights = document.createElement('div');
+      nights.className = 'attendee-nights';
       name.textContent = signup.full_name;
       const dates = [...signup.available_dates].sort();
       if (!dates.length) nights.textContent = 'Dates not selected';
@@ -173,8 +175,8 @@ async function loadAttendees() {
       row.append(name, nights);
       rows.append(row);
     }
-    attendeeRows.append(rows);
-    attendeesTable.hidden = !signups.length;
+    attendeeList.append(rows);
+    attendeeList.hidden = !signups.length;
     attendeesStatus.hidden = !!signups.length;
     attendeesStatus.textContent = signups.length ? '' : 'No signups yet.';
   } catch {
