@@ -7,7 +7,6 @@ const TABLE = 'hanukkah_serenading_signups';
 const form = document.querySelector('#signup-form');
 const fields = document.querySelector('#signup-fields');
 const fullName = document.querySelector('#full-name');
-const nameReminder = document.querySelector('#name-reminder');
 const phone = document.querySelector('#cell-phone');
 const email = document.querySelector('#email');
 const submitButton = document.querySelector('#submit-button');
@@ -17,22 +16,6 @@ const success = document.querySelector('#success');
 const summary = document.querySelector('#signup-summary');
 let submitting = false;
 let attempt = null;
-let nameReminderShown = false;
-let nameReminderTimer;
-
-if (android) {
-  nameReminder.hidden = true;
-  nameReminder.textContent = 'Please add anyone who is going with you separately';
-  fullName.closest('.name-field').prepend(nameReminder);
-  fullName.addEventListener('focus', () => {
-    if (nameReminderShown) return;
-    nameReminderShown = true;
-    nameReminder.hidden = false;
-    fullName.closest('.name-field').scrollIntoView({ block: 'center', behavior: 'instant' });
-    nameReminderTimer = setTimeout(() => { nameReminder.hidden = true; }, 4500);
-  });
-}
-
 function validateContact() {
   fullName.setCustomValidity(fullName.value.trim() ? '' : 'Please enter your first and last name.');
   const digits = phone.value.replace(/\D/g, '');
@@ -49,10 +32,6 @@ form.addEventListener('input', () => {
 });
 
 function showConfirmation(data) {
-  if (android) {
-    clearTimeout(nameReminderTimer);
-    nameReminder.hidden = true;
-  }
   summary.replaceChildren();
   const dates = data.available_dates.map(value => new Date(`${value}T12:00:00`).toLocaleDateString('en-US', {
     weekday: 'short', month: 'short', day: 'numeric',
@@ -132,11 +111,6 @@ document.querySelector('#another-signup').addEventListener('click', () => {
   success.hidden = true;
   summary.replaceChildren();
   form.hidden = false;
-  if (android) {
-    clearTimeout(nameReminderTimer);
-    nameReminderShown = false;
-    nameReminder.hidden = true;
-  }
   fullName.focus();
 });
 

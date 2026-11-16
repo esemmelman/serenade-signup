@@ -15,8 +15,8 @@ test('required contact fields, optional dates, confirmation, and another signup'
     return route.fulfill({ status: 201, body: '' });
   });
   await page.goto('/');
-  await expect(page.locator('#name-reminder')).toBeVisible();
-  await expect(page.locator('#name-reminder')).toHaveText('- Please add anyone who is going with you separately');
+  await expect(page.locator('#name-reminder')).toHaveCount(0);
+  await expect(page.getByText('Hosted by the Caring Community Committee', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Submit' }).click();
   expect(received).toHaveLength(0);
   await fillContact(page);
@@ -142,32 +142,4 @@ test('attendee list recovers from a failed request and handles an empty list', a
   await expect(dialog.getByRole('status')).toHaveText('No signups yet.');
   await page.keyboard.press('Escape');
   await expect(dialog).not.toBeVisible();
-});
-
-
-test('Android name reminder appears above the label for 4.5 seconds', async ({ page }) => {
-  await page.setViewportSize({ width: 360, height: 800 });
-  await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: 'Android Chrome' }));
-  await page.clock.install();
-  await page.route(endpoint, route => route.fulfill({ status: 201, body: '' }));
-  await page.goto('/');
-  const reminder = page.locator('#name-reminder');
-  const name = page.getByLabel('First & last name');
-  await expect(reminder).toBeHidden();
-  await name.focus();
-  await expect(reminder).toBeVisible();
-  await expect(reminder).toHaveText('Please add anyone who is going with you separately');
-  const bubbleBox = await reminder.boundingBox();
-  const labelBox = await page.locator('label[for="full-name"]').boundingBox();
-  expect(labelBox.y - bubbleBox.y - bubbleBox.height).toBeGreaterThanOrEqual(10);
-  expect(labelBox.y - bubbleBox.y - bubbleBox.height).toBeLessThanOrEqual(14);
-  await page.clock.fastForward(4400);
-  await expect(reminder).toBeVisible();
-  await page.clock.fastForward(100);
-  await expect(reminder).toBeHidden();
-  await fillContact(page);
-  await page.getByRole('button', { name: 'Submit', exact: true }).click();
-  await page.getByRole('button', { name: 'Add another signup' }).click();
-  await expect(reminder).toBeVisible();
-  await page.screenshot({ path: 'test-results/android-name-bubble.png', fullPage: true });
 });
