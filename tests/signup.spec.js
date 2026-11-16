@@ -115,7 +115,7 @@ for (const android of [false, true]) {
         })).toBe(1);
       }
     }
-    await page.getByRole('link', { name: "See who's going" }).click();
+    await page.getByRole('link', { name: "See Who's Going" }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog.locator('tbody tr td:first-child')).toHaveText(['alice Test', 'Bob Test', 'Zoe Test']);
     await expect(dialog.locator('tbody tr').first().locator('td').last()).toContainText('Dec. 5');
@@ -126,7 +126,7 @@ for (const android of [false, true]) {
     await page.screenshot({ path: `test-results/attendees-${android ? 'android' : 'desktop'}.png`, fullPage: true });
     await dialog.getByRole('button', { name: 'Close attendee list' }).click();
     await expect(dialog).not.toBeVisible();
-    await page.getByRole('link', { name: "See who's going" }).click();
+    await page.getByRole('link', { name: "See Who's Going" }).click();
     await expect(dialog.locator('tbody tr')).toHaveCount(3);
     expect(requests).toHaveLength(2);
   });
@@ -139,7 +139,7 @@ test('attendee list recovers from a failed request and handles an empty list', a
     return calls === 1 ? route.fulfill({ status: 500, json: {} }) : route.fulfill({ json: [] });
   });
   await page.goto('/');
-  await page.getByRole('link', { name: "See who's going" }).click();
+  await page.getByRole('link', { name: "See Who's Going" }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog.getByRole('alert')).toContainText('Please try again');
   await dialog.getByRole('button', { name: 'Try again' }).click();
