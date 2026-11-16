@@ -67,7 +67,7 @@ test('mobile form fits the viewport and saves selected availability', async ({ p
   await page.setViewportSize({ width: 360, height: 800 });
   await page.route(endpoint, route => route.fulfill({ status: 201, body: '' }));
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Hanukkah serenading.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Hanukkah Serenading.' })).toBeVisible();
   await fillContact(page);
   await page.getByLabel('Sunday').check();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

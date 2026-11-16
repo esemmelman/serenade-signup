@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#244fbc">
-  <meta name="description" content="Sign up for Hanukkah serenading on December 5, 6, and 8, 2026.">
+  <meta name="description" content="Sign up for Hanukkah Serenading on December 5, 6, and 8, 2026.">
   <title>Hanukkah Serenading · Sign up</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,36 +16,35 @@
   <main>
     <header class="intro">
       <p class="event-dates">December 5, 6 &amp; 8 · 2026</p>
-      <h1>Hanukkah<br><em>serenading.</em></h1>
-      <p class="invitation">Yes, I want to go Hanukkah serenading!</p>
+      <h1>Hanukkah<br><em>Serenading.</em></h1>
+      <p class="invitation">Yes, I want to go Hanukkah Serenading!</p>
     </header>
 
-    <section class="signup-card" aria-label="Hanukkah serenading signup">
+    <section class="signup-card" aria-label="Hanukkah Serenading signup">
       <form id="signup-form">
         <div class="form-heading">
           <h2>Count me in</h2>
-          <p>All fields are required except availability dates.</p>
         </div>
         <fieldset id="signup-fields">
           <div class="contact-fields">
-            <label for="full-name">First &amp; last name
+            <label for="full-name">First &amp; last name <span aria-hidden="true">*</span>
               <input id="full-name" name="full_name" autocomplete="name" maxlength="150" required placeholder="Your full name">
             </label>
-            <label for="people-count">Number of people
+            <label for="people-count">Number of people <span aria-hidden="true">*</span>
               <input id="people-count" name="people_count" type="number" inputmode="numeric" min="1" max="2147483647" step="1" required placeholder="Including you">
             </label>
-            <label for="cell-phone">Cell phone number
+            <label for="cell-phone">Cell phone number <span aria-hidden="true">*</span>
               <input id="cell-phone" name="cell_phone" type="tel" autocomplete="tel" maxlength="30" required placeholder="(555) 123-4567" aria-describedby="phone-hint">
               <span class="sr-only" id="phone-hint">Enter a phone number with 7 to 15 digits. Spaces, parentheses, plus signs, periods, and hyphens are accepted.</span>
             </label>
-            <label for="email">Email address
+            <label for="email">Email address <span aria-hidden="true">*</span>
               <input id="email" name="email" type="email" autocomplete="email" maxlength="254" required placeholder="you@example.com">
             </label>
           </div>
 
           <fieldset class="availability">
-            <legend>When are you available? <span>Optional</span></legend>
-            <p id="date-hint">Select any dates that work for you. You can leave these blank.</p>
+            <legend>When are you available?</legend>
+            <p id="date-hint">Select any dates that work for you.</p>
             <div class="date-options" aria-describedby="date-hint">
               <label class="date-option" for="dec-5">
                 <input id="dec-5" type="checkbox" name="available_dates" value="2026-12-05">
@@ -73,12 +72,12 @@
       <section id="success" class="success" tabindex="-1" aria-labelledby="success-title" hidden>
         <span class="success-check" aria-hidden="true">✓</span>
         <h2 id="success-title">You're on the list!</h2>
-        <p>Your Hanukkah serenading signup has been saved.</p>
+        <p>Your Hanukkah Serenading signup has been saved.</p>
         <dl id="signup-summary"></dl>
         <button type="button" id="another-signup" class="secondary-button">Add another signup</button>
       </section>
     </section>
-    <footer class="page-footer">Hanukkah serenading · December 2026</footer>
+    <footer class="page-footer">Hanukkah Serenading · December 2026</footer>
   </main>
 </body>
 </html>
