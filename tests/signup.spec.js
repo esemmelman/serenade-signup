@@ -227,3 +227,58 @@ test('guest dialog requires one name when enabled and supports cancel, escape, a
   await expect(page.getByRole('heading', { name: "You're on the list!" })).toBeVisible();
   expect(received[0]).toMatchObject({ people_count: 1, additional_names: [] });
 });
+
+
+for (const android of [false, true]) {
+  test(`phone formatting supports typing, pasting, and edits (${android ? 'Android' : 'desktop'})`, async ({ page }) => {
+    if (android) {
+      await page.setViewportSize({ width: 360, height: 800 });
+      await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: 'Android Chrome' }));
+    }
+    const received = [];
+    await page.route(endpoint, route => {
+      received.push(route.request().postDataJSON());
+      return route.fulfill({ status: 201, body: '' });
+    });
+    await page.goto('/');
+    await fillContact(page);
+    const phone = page.getByLabel('Cell phone number');
+    await phone.fill('');
+    await phone.pressSequentially('714');
+    await expect(phone).toHaveValue('(714) ');
+    await phone.pressSequentially('555');
+    await expect(phone).toHaveValue('(714) 555');
+    await phone.pressSequentially('0');
+    await expect(phone).toHaveValue('(714) 555-0');
+    await phone.press('Backspace');
+    await expect(phone).toHaveValue('(714) 555');
+    await phone.press('Backspace');
+    await expect(phone).toHaveValue('(714) 55');
+    await phone.fill('7145550123');
+    await expect(phone).toHaveValue('(714) 555-0123');
+    await phone.evaluate(element => element.setSelectionRange(1, 4));
+    await phone.pressSequentially('949');
+    await expect(phone).toHaveValue('(949) 555-0123');
+    await phone.evaluate(element => element.setSelectionRange(6, 6));
+    await phone.press('Backspace');
+    expect((await phone.inputValue()).replace(/\D/g, '')).toBe('945550123');
+    await phone.fill('7145550123');
+    await phone.evaluate(element => element.setSelectionRange(4, 4));
+    await phone.press('Delete');
+    expect((await phone.inputValue()).replace(/\D/g, '')).toBe('714550123');
+    await phone.press('ControlOrMeta+a');
+    await phone.press('Backspace');
+    await expect(phone).toHaveValue('');
+    await phone.fill('+1 2025550148');
+    await expect(phone).toHaveValue('+1 (202) 555-0148');
+    await phone.fill('+44 20 7946 0958');
+    await expect(phone).toHaveValue('+44 20 7946 0958');
+    await phone.fill('5551234');
+    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    expect(received).toHaveLength(0);
+    await phone.fill('2025550148');
+    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    await expect(page.getByRole('heading', { name: "You're on the list!" })).toBeVisible();
+    expect(received[0].cell_phone).toBe('(202) 555-0148');
+  });
+}

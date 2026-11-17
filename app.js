@@ -25,6 +25,58 @@ let additionalNames = [];
 let submitting = false;
 let attempt = null;
 
+function formatPhone(value) {
+  const digits = value.replace(/\D/g, '');
+  if (value.trim().startsWith('+') && !(digits.length === 11 && digits.startsWith('1'))) return value;
+  if (!digits) return '';
+  const hasCountryCode = digits.length === 11 && digits.startsWith('1');
+  const national = hasCountryCode ? digits.slice(1) : digits;
+  if (national.length > 10) return value;
+  let formatted = `${hasCountryCode ? '+1 ' : ''}(${national.slice(0, 3)})`;
+  if (national.length >= 3) formatted += ' ';
+  formatted += national.slice(3, 6);
+  if (national.length > 6) formatted += `-${national.slice(6)}`;
+  return formatted;
+}
+
+phone.addEventListener('input', event => {
+  const value = phone.value;
+  const cursor = phone.selectionStart ?? value.length;
+  const digitsBeforeCursor = value.slice(0, cursor).replace(/\D/g, '').length;
+  const formatted = formatPhone(value);
+  if (formatted === value) return;
+  phone.value = formatted;
+  let position = 0;
+  let digitsSeen = 0;
+  while (position < formatted.length && digitsSeen < digitsBeforeCursor) {
+    if (/\d/.test(formatted[position])) digitsSeen += 1;
+    position += 1;
+  }
+  if (!event.inputType?.startsWith('delete')) {
+    while (position < formatted.length && !/\d/.test(formatted[position])) position += 1;
+  }
+  phone.setSelectionRange(position, position);
+});
+
+// Delete a digit when Backspace or Delete reaches automatically inserted punctuation.
+phone.addEventListener('beforeinput', event => {
+  if (!event.cancelable) return;
+  const backward = event.inputType === 'deleteContentBackward';
+  const forward = event.inputType === 'deleteContentForward';
+  if ((!backward && !forward) || phone.selectionStart !== phone.selectionEnd) return;
+  if (!phone.value.startsWith('(') && !phone.value.startsWith('+1 (')) return;
+  const cursor = phone.selectionStart ?? 0;
+  let position = backward ? cursor - 1 : cursor;
+  if (position < 0 || position >= phone.value.length || /\d/.test(phone.value[position])) return;
+  while (position >= 0 && position < phone.value.length && !/\d/.test(phone.value[position])) {
+    position += backward ? -1 : 1;
+  }
+  if (position < 0 || position >= phone.value.length) return;
+  event.preventDefault();
+  phone.setRangeText('', position, position + 1, 'end');
+  phone.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: event.inputType }));
+});
+
 function updateGuestSummary() {
   bringingOthers.checked = additionalNames.length > 0;
   guestSummary.hidden = !additionalNames.length;
@@ -65,8 +117,10 @@ guestForm.addEventListener('submit', event => {
 function validateContact() {
   fullName.setCustomValidity(fullName.value.trim() ? '' : 'Please enter your first and last name.');
   const digits = phone.value.replace(/\D/g, '');
-  const validPhone = /^[\d\s()+.\-]+$/.test(phone.value) && digits.length >= 7 && digits.length <= 15;
-  phone.setCustomValidity(validPhone ? '' : 'Please enter a cell phone number with 7 to 15 digits.');
+  const domestic = digits.length === 10 || (digits.length === 11 && digits.startsWith('1'));
+  const international = phone.value.trim().startsWith('+') && digits.length >= 7 && digits.length <= 15;
+  const validPhone = /^[\d\s()+.\-]+$/.test(phone.value) && (domestic || international);
+  phone.setCustomValidity(validPhone ? '' : 'Please enter your three-digit area code and seven-digit phone number, or an international number starting with +.');
   email.setCustomValidity(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()) ? '' : 'Please enter a valid email address.');
 }
 
