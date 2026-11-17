@@ -158,3 +158,6 @@ h2{color:#244fbc}
 
 .guest-name-lines input::spelling-error{ text-decoration:none }
 .guest-name-lines input::grammar-error{ text-decoration:none }
+
+.android .contact-fields>.additional-attendees{grid-column:1/-1}
+.android .contact-fields>.additional-attendees .bringing-others{margin-top:0}

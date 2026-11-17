@@ -66,6 +66,14 @@ test('Android form fits the viewport and saves selected availability', async ({ 
   await page.route(endpoint, route => route.fulfill({ status: 201, body: '' }));
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Hanukkah Serenading' })).toBeVisible();
+  const emailField = page.getByLabel('Email address');
+  const othersCheckbox = page.getByLabel('I will be bringing others (Spouse, Children, Friends)', { exact: true });
+  const emailBox = await emailField.boundingBox();
+  const checkboxBox = await othersCheckbox.boundingBox();
+  expect(emailBox.y + emailBox.height).toBeLessThan(checkboxBox.y);
+  await emailField.focus();
+  await page.keyboard.press('Tab');
+  await expect(othersCheckbox).toBeFocused();
   await fillContact(page);
   await page.getByLabel('Sunday').check();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

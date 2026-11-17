@@ -41,8 +41,10 @@
                 <input id="cell-phone" name="cell_phone" type="tel" autocomplete="tel" maxlength="30" required placeholder="(555) 123-4567" aria-describedby="phone-hint">
                 <span class="sr-only" id="phone-hint">Enter a phone number with 7 to 15 digits. Spaces, parentheses, plus signs, periods, and hyphens are accepted.</span>
               </label>
-              <label class="bringing-others" for="bringing-others"><input id="bringing-others" type="checkbox" aria-haspopup="dialog" aria-controls="guest-dialog">I will be bringing others (Spouse, Children, Friends)</label>
-              <div id="guest-summary" hidden><p id="guest-summary-names"></p><button type="button" id="edit-guests" class="text-button">Edit names</button></div>
+              <div class="additional-attendees">
+                <label class="bringing-others" for="bringing-others"><input id="bringing-others" type="checkbox" aria-haspopup="dialog" aria-controls="guest-dialog">I will be bringing others (Spouse, Children, Friends)</label>
+                <div id="guest-summary" hidden><p id="guest-summary-names"></p><button type="button" id="edit-guests" class="text-button">Edit names</button></div>
+              </div>
             </div>
             <label for="email">Email address <span aria-hidden="true">*</span>
               <input id="email" name="email" type="email" autocomplete="email" maxlength="254" required placeholder="you@example.com">

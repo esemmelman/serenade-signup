@@ -9,6 +9,7 @@ const fields = document.querySelector('#signup-fields');
 const fullName = document.querySelector('#full-name');
 const phone = document.querySelector('#cell-phone');
 const email = document.querySelector('#email');
+if (android) email.closest('label').after(document.querySelector('.additional-attendees'));
 const submitButton = document.querySelector('#submit-button');
 const errorMessage = document.querySelector('#form-error');
 const status = document.querySelector('#save-status');
