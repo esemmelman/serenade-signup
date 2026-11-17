@@ -130,8 +130,8 @@ fieldset:disabled{opacity:.7}
 #guest-dialog form{padding:30px}
 .guest-name-lines{margin:20px 0 0;padding-left:30px}
 .guest-name-lines li{padding-left:10px;margin-bottom:18px;font-size:18px}
-.guest-name-lines input{width:100%;min-width:0;min-height:48px;padding:12px 12px 2px;border:0;border-bottom:1px solid #8b9cba;border-radius:0;background:transparent;font-size:18px;font-weight:400;line-height:1.25;text-decoration:none;appearance:none}
-.guest-name-lines input:focus{outline:0;box-shadow:none;border-bottom:2px solid #244fbc}
+.guest-name-lines input{width:100%;min-width:0;height:48px;padding:20px 12px 0;border:0;border-radius:0;background-color:transparent;background-image:linear-gradient(var(--guest-line,#8b9cba),var(--guest-line,#8b9cba));background-repeat:no-repeat;background-size:100% 1px;background-position:left calc(100% - 5px);font-size:18px;font-weight:400;line-height:1;text-decoration:none;appearance:none}
+.guest-name-lines input:focus{outline:0;box-shadow:none;background-image:linear-gradient(#244fbc,#244fbc);background-size:100% 2px}
 .guest-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:28px}
 .guest-actions button{width:auto}
 .android .bringing-others{font-size:22px}
@@ -154,9 +154,8 @@ h2{color:#244fbc}
 .attendee{padding:14px;border-radius:10px;background:#eaf1ff}
 .attendee:nth-child(even){background:#e7f6ed}
 .guest-name-lines li::marker{color:#244fbc;font-weight:700}
-.guest-name-lines li:nth-child(1) input{background:#eaf1ff;border-bottom-color:#557dcb}
-.guest-name-lines li:nth-child(2) input{background:#fff2cb;border-bottom-color:#b98b22}
-.guest-name-lines li:nth-child(3) input{background:#e4f5ec;border-bottom-color:#378b72}
-.guest-name-lines li:nth-child(4) input{background:#f0e9fc;border-bottom-color:#8a67b4}
-.guest-name-lines li:nth-child(5) input{background:#ffebdd;border-bottom-color:#c37842}
-.guest-name-lines input:focus{border-bottom-color:#244fbc}
+.guest-name-lines li:nth-child(1) input{background-color:#eaf1ff;--guest-line:#557dcb}
+.guest-name-lines li:nth-child(2) input{background-color:#fff2cb;--guest-line:#b98b22}
+.guest-name-lines li:nth-child(3) input{background-color:#e4f5ec;--guest-line:#378b72}
+.guest-name-lines li:nth-child(4) input{background-color:#f0e9fc;--guest-line:#8a67b4}
+.guest-name-lines li:nth-child(5) input{background-color:#ffebdd;--guest-line:#c37842}
