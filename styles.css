@@ -154,11 +154,7 @@ h2{color:#244fbc}
 .attendee{padding:14px;border-radius:10px;background:#eaf1ff}
 .attendee:nth-child(even){background:#e7f6ed}
 .guest-name-lines li::marker{color:#244fbc;font-weight:700}
-.guest-name-lines li:nth-child(1) input{background-color:#eaf1ff;--guest-line:#557dcb}
-.guest-name-lines li:nth-child(2) input{background-color:#fff2cb;--guest-line:#b98b22}
-.guest-name-lines li:nth-child(3) input{background-color:#e4f5ec;--guest-line:#378b72}
-.guest-name-lines li:nth-child(4) input{background-color:#f0e9fc;--guest-line:#8a67b4}
-.guest-name-lines li:nth-child(5) input{background-color:#ffebdd;--guest-line:#c37842}
+.guest-name-lines input{background-color:#eaf1ff;--guest-line:#557dcb}
 
 .guest-name-lines input::spelling-error{ text-decoration:none }
 .guest-name-lines input::grammar-error{ text-decoration:none }
