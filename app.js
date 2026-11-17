@@ -35,7 +35,7 @@ function formatPhone(value) {
   let formatted = `${hasCountryCode ? '+1 ' : ''}(${national.slice(0, 3)})`;
   if (national.length >= 3) formatted += ' ';
   formatted += national.slice(3, 6);
-  if (national.length > 6) formatted += `-${national.slice(6)}`;
+  if (national.length >= 6) formatted += `-${national.slice(6)}`;
   return formatted;
 }
 

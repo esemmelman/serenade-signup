@@ -247,11 +247,12 @@ for (const android of [false, true]) {
     await phone.pressSequentially('714');
     await expect(phone).toHaveValue('(714) ');
     await phone.pressSequentially('555');
-    await expect(phone).toHaveValue('(714) 555');
+    await expect(phone).toHaveValue('(714) 555-');
+    expect(await phone.evaluate(element => element.selectionStart)).toBe(10);
     await phone.pressSequentially('0');
     await expect(phone).toHaveValue('(714) 555-0');
     await phone.press('Backspace');
-    await expect(phone).toHaveValue('(714) 555');
+    await expect(phone).toHaveValue('(714) 555-');
     await phone.press('Backspace');
     await expect(phone).toHaveValue('(714) 55');
     await phone.fill('7145550123');
